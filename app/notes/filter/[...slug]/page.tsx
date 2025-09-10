@@ -10,6 +10,29 @@ type Params = {
   params: Promise<{ slug: string[] }>;
 };
 
+export async function generateMetadata({ params }: Params) {
+  const { slug } = await params;
+  const tag = slug[0];
+
+  return {
+    title: `${tag} notes`,
+    description: `Page with notes filtered by ${tag} caategory`,
+    openGraph: {
+      title: `${tag} notes`,
+      description: `Page with notes filtered by ${tag} caategory`,
+      url: ``,
+      images: [
+        {
+          url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
+          width: 1200,
+          height: 650,
+          alt: 'NoteHub page image',
+        },
+      ],
+    },
+  };
+}
+
 export default async function App({ params }: Params) {
   const queryClient = new QueryClient();
   const { slug } = await params;

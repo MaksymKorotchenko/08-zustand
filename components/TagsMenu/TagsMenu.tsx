@@ -1,7 +1,7 @@
 'use client';
 
-import css from './TagsMenu.module.css';
 import Link from 'next/link';
+import css from './TagsMenu.module.css';
 
 const TagNames = ['All', 'Work', 'Personal', 'Meeting', 'Shopping', 'Todo'];
 

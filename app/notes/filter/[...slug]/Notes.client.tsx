@@ -1,7 +1,5 @@
 'use client';
 
-import Modal from '@/components/Modal/Modal';
-import NoteForm from '@/components/NoteForm/NoteForm';
 import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
 import SearchBox from '@/components/SearchBox/SearchBox';
@@ -10,6 +8,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { fetchNotes } from '@/lib/api';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import css from './NotesPage.module.css';
+import Link from 'next/link';
 
 type NotesProps = {
   category: string;
@@ -18,7 +17,6 @@ type NotesProps = {
 export default function Notes({ category }: NotesProps) {
   const [searchNote, setSearchNote] = useState('');
   const [page, setPage] = useState(1);
-  const [isOpen, setIsOpen] = useState(false);
 
   const debouncedSearchNote = useDebouncedCallback((value: string) => {
     setSearchNote(value);
@@ -32,14 +30,6 @@ export default function Notes({ category }: NotesProps) {
     placeholderData: keepPreviousData,
   });
 
-  function handleOpenModal() {
-    setIsOpen(true);
-  }
-
-  function handleCloseModal() {
-    setIsOpen(false);
-  }
-
   return (
     <>
       <div className={css.app}>
@@ -52,19 +42,11 @@ export default function Notes({ category }: NotesProps) {
               onClick={({ selected }) => setPage(selected + 1)}
             />
           )}
-          <button className={css.button} onClick={handleOpenModal}>
+          <Link href={'/notes/action/create'} className={css.button}>
             Create note +
-          </button>
+          </Link>
         </header>
         {data && isSuccess && <NoteList notes={data.notes} />}
-        {isOpen && (
-          <Modal onClose={handleCloseModal}>
-            <NoteForm
-              onCancel={handleCloseModal}
-              onSubmit={handleCloseModal}
-            ></NoteForm>
-          </Modal>
-        )}
       </div>
     </>
   );
