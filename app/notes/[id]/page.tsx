@@ -4,22 +4,25 @@ import {
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
+import { Metadata } from 'next';
 import NoteAboutClient from './NoteDetails.client';
 
 type NoteAboutProps = {
   params: Promise<{ id: string }>;
 };
 
-export async function generateMetadata({ params }: NoteAboutProps) {
+export async function generateMetadata({
+  params,
+}: NoteAboutProps): Promise<Metadata> {
   const { id } = await params;
   const note = await fetchNoteById(id);
 
   return {
-    title: `${note}`,
-    description: `${note} note's description`,
+    title: `${note.title}`,
+    description: `${note.content}`,
     openGraph: {
-      title: `${note}`,
-      description: `${note} note's description`,
+      title: `${note.title}`,
+      description: `${note.content} note's description`,
       url: `https://08-zustand-sandy-eight.vercel.app/notes/${id}`,
       images: [
         {

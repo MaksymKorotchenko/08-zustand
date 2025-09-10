@@ -1,7 +1,11 @@
 'use client';
 
 import { createNote } from '@/lib/api';
-import { useMutation } from '@tanstack/react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import * as Yup from 'yup';
 import type { FormValues, NoteTag } from '../../types/note';
 import css from './NoteForm.module.css';
@@ -22,6 +26,7 @@ const NoteSchema = Yup.object().shape({
 
 export default function NoteForm() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const onCancel = () => router.push('/notes/filter/All');
   const { draft, setDraft, clearDraft } = useDraftStore();
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -29,6 +34,7 @@ export default function NoteForm() {
     mutationFn: createNote,
     onSuccess() {
       router.push('/notes/filter/All');
+      queryClient.invalidateQueries({ queryKey: ['notes'] });
     },
   });
 
