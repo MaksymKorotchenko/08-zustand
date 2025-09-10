@@ -12,24 +12,25 @@ type NoteAboutProps = {
 
 export async function generateMetadata({ params }: NoteAboutProps) {
   const { id } = await params;
+  const note = await fetchNoteById(id);
 
-  //   return {
-  //     title: `${id} notes`,
-  //     description: `Page with notes filtered by ${tag} caategory`,
-  //     openGraph: {
-  //       title: `${tag} notes`,
-  //       description: `Page with notes filtered by ${tag} caategory`,
-  //       url: ``,
-  //       images: [
-  //         {
-  //           url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
-  //           width: 1200,
-  //           height: 650,
-  //           alt: 'NoteHub page image',
-  //         },
-  //       ],
-  //     },
-  //   };
+  return {
+    title: `${note}`,
+    description: `${note} note's description`,
+    openGraph: {
+      title: `${note}`,
+      description: `${note} note's description`,
+      url: `https://08-zustand-sandy-eight.vercel.app/notes/${id}`,
+      images: [
+        {
+          url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
+          width: 1200,
+          height: 650,
+          alt: 'NoteHub page image',
+        },
+      ],
+    },
+  };
 }
 
 export default async function NoteAbout({ params }: NoteAboutProps) {
